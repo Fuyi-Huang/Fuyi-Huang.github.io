@@ -17,61 +17,58 @@ InnoDB中，对这4中事务隔离级别使用不同的锁策略。如果对于�
 
 ### 设置事务隔离级别
 
-  1. 设置全局的事务隔离级别
+1. 设置全局的事务隔离级别
 
-  这个sql语句会影响接下来的所有会话的事务隔离级别，已经开始的会话不会受影响。
+这个sql语句会影响接下来的所有会话的事务隔离级别，已经开始的会话不会受影响。
 
-  ```sql
-  SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-  SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
-  SET GLOBAL TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
-  SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-  ```
+```sql
+SET GLOBAL TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SET GLOBAL TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+SET GLOBAL TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
 
-  2. 设置当前会话期间的事务隔离级别
+2. 设置当前会话期间的事务隔离级别
 
-  这个sql语句会影响当前会话所有接下来的事务。
-  可以在一个事务中间执行，不会影响当前执行中的事务隔离级别。
-  如果在两个事务之间执行该sql语句，会以该事务隔离级别覆盖两个事物之间执行的sql语句。
+这个sql语句会影响当前会话所有接下来的事务。
+可以在一个事务中间执行，不会影响当前执行中的事务隔离级别。
+如果在两个事务之间执行该sql语句，会以该事务隔离级别覆盖两个事物之间执行的sql语句。
 
-  ```sql
-  SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-  SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
-  SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
-  SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-  ```
+```sql
+SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
 
-  3. 设置下一个事务的事务隔离级别
+3. 设置下一个事务的事务隔离级别
 
-  这个sql语句只会影响当前会话的下一个事务。
-  下一个事务之后的事务的隔离级别会回到该sql语句之前的隔离级别。
-  该sql语句是不能在一个事务中间执行的。
+这个sql语句只会影响当前会话的下一个事务。
+下一个事务之后的事务的隔离级别会回到该sql语句之前的隔离级别。
+该sql语句是不能在一个事务中间执行的。
 
-  ```sql
-  SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-  SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-  SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
-  SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-  ```
+```sql
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+```
 
-  ```shell
-  mysql> START TRANSACTION;
-  Query OK, 0 rows affected (0.02 sec)
+```shell
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.02 sec)
 
-  mysql> SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-  ERROR 1568 (25001): Transaction characteristics can't be changed
-  while a transaction is in progress
-  ```
+mysql> SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+ERROR 1568 (25001): Transaction characteristics can't be changed
+while a transaction is in progress
+```
 
 ### REPEATTABLE_READ
 
-这个是InnoDB的默认隔离级别。REPEATABLE READ是用一致性读(consistent reads，也叫快照读)的方法来实现可重复读的。在同一个事务里面，所有个select语句都是基于第一个select语句建立的快照。这意味着如果在同一事务中发起的多个非锁定(nonlocking)select语句，则这些select语句相互之间是一致的。
+这个是InnoDB的默认隔离级别。REPEATABLE READ是用一致性读(consistent reads，也叫快照读)的方法来实现可重复读的。在同一个事务里面，所有个select语句都是基于事务开始时建立的快照。这意味着如果在同一事务中发起的多个非锁定(nonlocking)select语句，则这些select语句相互之间是一致的。
 
-而对于锁读(locking reads，即select for update / for share)，update和delete语句，锁的范围取决于这些sql语句是使用了唯一搜索条件的唯一索引，还是一个范围搜索。
+而对于锁读(locking reads，即select for update / for share)，update和delete语句，锁的范围取决于这些sql语句是使用了唯一搜索条件的唯一索引，还是一个范围搜索，具体可以看何登成的这一篇博客[MySQL 加锁处理分析](http://hedengcheng.com/?p=771)。
 
-* 如果是使用了唯一搜索条件的唯一索引，InnoDB只会锁住哪一行。
-
-* 否则，InnoDB会锁住它扫描的区间，在这个区间内，InnoDB会用gap locks或者next-key locks锁住，不让其他session的事务往这个区间插入数据。
 
 ### READ_COMMITTED
 
