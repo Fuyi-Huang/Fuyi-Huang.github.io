@@ -1,5 +1,5 @@
 ---
-title: leetcode 刷题总结
+title: leetcode sqrt(x) 刷题总结
 tags: 
     - programming 
     - c++
