@@ -27,8 +27,10 @@ Java里面请求服务A用的是HTTP client是OKHttp3，请求得到服务A的�
 
 虽然是赶在deadline之前上线了，但是之前PHP和curl没问题，但是postman和Java请求就有问题，上线之后一直担心哪里有坑。第二天花了一些时间专门研究下，我先是在机器上用`tcpdump host {服务A IP} -s 1024 -l -A`命令监控服务A的流量，
 然后运行Java项目，观察Java项目请求服务A的流量，和用curl手动请求服务A流量。
-![image-title-here](https://fuyi-huang.github.io/assets/images/2021-01-31/1.png){:class="img-responsive"}
-![image-title-here](https://fuyi-huang.github.io/assets/images/2021-01-31/1.png){:class="img-responsive"}
+![curl](https://fuyi-huang.github.io/assets/images/2021-01-31/1.png){:class="img-responsive"}
+<center>图1：curl请求</center>
+![ok http请求](https://fuyi-huang.github.io/assets/images/2021-01-31/1.png){:class="img-responsive"}
+<center>图2：ok http请求</center>
 看上图1curl的请求和图2Java项目的请求，发现Java项目的请求里面有`Accept-Encoding: gzip`请求头，但是curl的流量里面没有这个请求头。而且我请求服务A的时候没有自己设置这个请求头，可想而知是OKHTTP自动设置的。
 看下面OKHTTP BridgeInterceptor类的源码
 ```java
