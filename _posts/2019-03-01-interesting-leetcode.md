@@ -39,7 +39,7 @@ $$ x_{n + 1} = x_{n} - \frac{f(x_n)}{f'(x_n)} $$
 int mySqrt(int x)
 {
     double res = x;
-    while ( abs(res * res - x) < 1 )
+    while ( abs(res * res - x) > 0.5 )
     {
         res = res - (res * res - x) / (2 * res);
     }
@@ -53,7 +53,7 @@ int mySqrt(int x)
 int mySqrt(int x)
 {
     long res = x;
-    while ( abs(res * res - x) < 1 )
+    while ( abs(res * res - x) > 1 )
     {
         res = res - (res * res - x) / (2 * res);
     }
@@ -71,16 +71,6 @@ int mySqrt(int x)
 原因呢也很简单，当不断迭代到 res * res 接近于x时，` (res * res - x) / (2 * res) `一直是0，因为x和res都是整数，所以迭代就变成了` res = res `
 
 ```c++
-int mySqrt(int x)
-{
-    long res = x;
-    while ( abs(res * res - x) < 1)
-    {
-        res = res - (res * res - x) / (2 * res) - 1;
-    }
-    return res;
-}
-
 // 或者更优雅的写法是
 int mySqrt(int x)
 {
