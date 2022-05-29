@@ -1,4 +1,4 @@
-```
+---
 title: Linux运维命令备忘
 tags: 
     - linux 
@@ -8,8 +8,7 @@ article_header:
     src: assets/images/header_images/zelda.jpg
 mathjax: true
 mathjax_autoNumber: true
-```
-
+---
 
 
 ## 用kind安装kubernetes集群教程

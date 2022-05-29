@@ -103,7 +103,7 @@ mathjax_autoNumber: true
 
 将虚拟化地址转化成物理内存地址（翻译）。虚拟化地址存储在多层级的分页表PTE（page table entry)里。为了实现对PTE的高速访问，现代的内存条都会有一个分页表的缓存TLB(transfer lookaside buffer)。
 
-![image-20210528095623341](./../assets/images/2021-05-25/image-20210528095623341.png)
+![image-20210528095623341](https://fuyi-huang.github.io/assets/images/2021-05-25/image-20210528095623341.png)
 
 ①CPU发送虚拟内存地址（virtual address）给MMU
 
@@ -115,7 +115,7 @@ mathjax_autoNumber: true
 
 ⑤把物理内存的数据返回给CPU
 
-![image-20210528100544508](./../assets/images/2021-05-25/image-20210528100544508.png)
+![image-20210528100544508](https://fuyi-huang.github.io//assets/images/2021-05-25/image-20210528100544508.png)
 
 这个是虚拟页表查找MISS的情况。
 
