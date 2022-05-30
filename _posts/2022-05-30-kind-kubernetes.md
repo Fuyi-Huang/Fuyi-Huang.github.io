@@ -1,5 +1,5 @@
 ---
-title: Linux运维命令备忘
+title: 用kind安装kubernetes集群教程
 tags: 
     - linux 
 article_header:
@@ -10,8 +10,6 @@ mathjax: true
 mathjax_autoNumber: true
 ---
 
-
-## 用kind安装kubernetes集群教程
 
 ### 创建HTTPS证书密钥
 
