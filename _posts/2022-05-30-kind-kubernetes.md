@@ -1,5 +1,5 @@
 ---
-title: 用kind安装kubernetes集群教程
+title: 用kind安装kubernetes集群过程记录
 tags: 
     - linux 
 article_header:
@@ -29,11 +29,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 
 
 kubectl wait --namespace ingress-nginx \
-
   --for=condition=ready pod \
-
   --selector=app.kubernetes.io/component=controller \
-
   --timeout=90s
 
 ```
@@ -101,25 +98,23 @@ spec:
               number: 10080
 
   - host: www.fy-huang.cn
-
     http:
-
       paths:
-
       - pathType: Prefix
-
         path: "/"
-
         backend:
-
           service:
-
             name: website-frontend-service
-
             port:
-
               number: 80
 
+```
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  namespace: website
 ```
 
 ### 创建单例持久化MySQL
@@ -131,7 +126,7 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-
+  namespace: website
   name: mysql
 
 spec:
